@@ -11,9 +11,9 @@ enum PlayerState {
 var current_state: PlayerState = PlayerState.IDLE
 var direction
 # Exported variables
-@export var speed: int = 400
-@export var jump_force: int = 400
-@export var gravity: int = 900
+@export var speed: int = 800
+@export var jump_force: int = 800
+@export var gravity: int = 1600
 
 # Main physics process function
 func _physics_process(delta):

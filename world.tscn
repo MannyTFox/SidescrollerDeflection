@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://4lp6jxk2r8sj"]
+
+[ext_resource type="PackedScene" uid="uid://c4te5bss7vhxn" path="res://Player.tscn" id="1_qqxl3"]
+[ext_resource type="Texture2D" uid="uid://cu6tuh054n7sq" path="res://Textures/ground.png" id="2_c1gh0"]
+[ext_resource type="Texture2D" uid="uid://bd7wvrov4s4jc" path="res://Textures/Boss_room_concept_3_2.png" id="3_f7byf"]
+[ext_resource type="Texture2D" uid="uid://dmpf5r33tkqlv" path="res://Textures/pngegg.png" id="4_ic6in"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_v1cvs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tq2w"]
+size = Vector2(256, 128)
+
+[sub_resource type="Environment" id="Environment_icvq5"]
+background_mode = 3
+background_energy_multiplier = 0.0
+glow_intensity = 1.89
+glow_blend_mode = 1
+glow_hdr_threshold = 0.29
+adjustment_enabled = true
+adjustment_brightness = 1.59
+adjustment_contrast = 1.08
+adjustment_saturation = 1.5
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_1qvio"]
+polygon = PackedVector2Array(78, -21, 46, -102, 43, -230, 20, -273, 26, -363, 59, -440, 223, -612, 519, -791, -464, -808, -220, -638, -68, -429, -33, -360, -29, -272, -51, -234, -48, -97, -86, -8, 78, -9)
+
+[node name="world" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_qqxl3")]
+motion_mode = 0
+
+[node name="Ground" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(16.5, 105)
+scale = Vector2(8.71484, 1)
+texture = ExtResource("2_c1gh0")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground"]
+physics_material_override = SubResource("PhysicsMaterial_v1cvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8tq2w")
+
+[node name="BossRoomConcept32" type="Sprite2D" parent="."]
+z_index = -3
+position = Vector2(16, -297)
+scale = Vector2(0.464079, 0.464079)
+texture = ExtResource("3_f7byf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_icvq5")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-1, -711)
+scale = Vector2(4.1018, 4.1018)
+energy = 1.29
+blend_mode = 2
+shadow_enabled = true
+texture = ExtResource("4_ic6in")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2(-801, 46)
+occluder = SubResource("OccluderPolygon2D_1qvio")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="LightOccluder2D"]
+position = Vector2(1642, 4)
+occluder = SubResource("OccluderPolygon2D_1qvio")

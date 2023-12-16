@@ -1,106 +1,96 @@
 extends CharacterBody2D
 
-enum PlayerState {
-	IDLE,
-	RUN,
-	JUMP,
-	FALL,
-	ATTACK,
-	GUARD,
-}
-
-var current_state: PlayerState = PlayerState.IDLE
+enum PlayerState { IDLE, RUN, JUMP, FALL, ATTACK, GUARD }
+var state: PlayerState = PlayerState.IDLE
 var direction
-# Exported variables
-@export var speed: int = 400
-@export var jump_force: int = 400
-@export var gravity: int = 900
-@export var lock_player: bool = false
+var speed: int = 800
+var jump_force: int = 800
+var gravity: int = 1900
+var functionLabel
 
+var combo_timer: float = 0.0
+var combo_sequence: int = 0
 
-# Main physics process function
+func _ready():
+	functionLabel = $FunctionLabel
+
 func _physics_process(delta):
-	
-	if !lock_player:
-		direction = Input.get_axis("Left", "Right")
+	_handle_input(delta)
+
+	if is_on_floor():
+		match state:
+			PlayerState.IDLE:
+				_Idle(delta)
+			PlayerState.RUN:
+				_Run(delta)
+			PlayerState.JUMP:
+				_Jump(delta)
+			PlayerState.FALL:
+				_Fall(delta)
+			PlayerState.ATTACK:
+				_Attack(delta)
+			PlayerState.GUARD:
+				_Guard(delta)
 	else:
-		direction = 0
-		velocity.x = 0
-		
+		_Fall(delta)
+
+	move_and_slide()
+
+	if direction > 0:
+		$Sprite.flip_h = false
+	elif direction < 0:
+		$Sprite.flip_h = true
+
+func _handle_input(delta):
+	direction = Input.get_axis("Left", "Right")
+
 	if is_on_floor():
 		if direction:
-			current_state = PlayerState.RUN
+			state = PlayerState.RUN
 		else:
-			current_state = PlayerState.IDLE
+			state = PlayerState.IDLE
+
+		if Input.is_action_just_pressed("Jump"):
+			state = PlayerState.JUMP
+
+		if Input.is_action_just_pressed("Attack"):
+			state = PlayerState.ATTACK
+
+		if Input.is_action_pressed("Guard"):
+			state = PlayerState.GUARD
 	else:
-		current_state = PlayerState.FALL
-			
-			
-	if Input.is_action_just_pressed("Jump") && is_on_floor():
-		current_state = PlayerState.JUMP
-		
-	if Input.is_action_just_pressed("Attack") && is_on_floor():
-		current_state = PlayerState.ATTACK
-		
-	if Input.is_action_pressed("Guard") && is_on_floor():
-		current_state = PlayerState.GUARD
-		lock_player = true
-	if Input.is_action_just_released("Guard"):
-		lock_player = false
-		
-	match current_state:
-		
-		PlayerState.IDLE:
-			_Idle(delta)
-		PlayerState.RUN:
-			_Run(delta)
-		PlayerState.JUMP:
-			_Jump(delta)
-		PlayerState.FALL:
-			_Fall(delta)
-		PlayerState.ATTACK:
-			_Attack(delta)
-		PlayerState.GUARD:
-			_Guard(delta)
-			
-	move_and_slide()
-	
-	if direction > 0:
-		$"Kaito-sheet".flip_h = false
-	elif direction < 0:
-		$"Kaito-sheet".flip_h = true
-	
+		state = PlayerState.FALL
 
 
 func _Idle(delta):
-	
-	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Idle")
+	_handle_animations("Idle")
 	velocity.x = 0
-	
-func _Run(delta):
-	
-	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Run")
-	velocity.x = direction * speed
-	
 
-	
+func _Run(delta):
+	_handle_animations("Run")
+	velocity.x = direction * speed
+
 func _Jump(delta):
+	_handle_animations("Jump")
 	velocity.x = direction * speed
 	velocity.y -= jump_force
-	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Jump")
-	
-func _Fall(delta):
 
+func _Fall(delta):
+	_handle_animations("Fall")
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
-	
+
 	if velocity.y >= 0:
-		$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Fall")
-	
+		_handle_animations("Fall")
 
 func _Attack(delta):
-	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Attack")
-	
+	_handle_animations("Attack")
+	velocity.x = 0
 
 func _Guard(delta):
-	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Guard")
+	_handle_animations("Guard")
+	velocity.x = 0
+
+func _handle_animations(state: String):
+	functionLabel.text = state
+	$Sprite/AnimationTree.get("parameters/playback").travel(state)

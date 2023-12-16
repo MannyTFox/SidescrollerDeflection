@@ -6,30 +6,47 @@ enum PlayerState {
 	JUMP,
 	FALL,
 	ATTACK,
+	GUARD,
 }
 
 var current_state: PlayerState = PlayerState.IDLE
 var direction
 # Exported variables
-@export var speed: int = 800
-@export var jump_force: int = 800
-@export var gravity: int = 1600
+@export var speed: int = 400
+@export var jump_force: int = 400
+@export var gravity: int = 900
+@export var lock_player: bool = false
+
 
 # Main physics process function
 func _physics_process(delta):
 	
-	direction = Input.get_axis("Left", "Right")
-	
-	if direction:
-		current_state = PlayerState.RUN
-	elif !direction && is_on_floor():
-		current_state = PlayerState.IDLE
-	
+	if !lock_player:
+		direction = Input.get_axis("Left", "Right")
+	else:
+		direction = 0
+		velocity.x = 0
+		
+	if is_on_floor():
+		if direction:
+			current_state = PlayerState.RUN
+		else:
+			current_state = PlayerState.IDLE
+	else:
+		current_state = PlayerState.FALL
+			
+			
 	if Input.is_action_just_pressed("Jump") && is_on_floor():
 		current_state = PlayerState.JUMP
-	
-	if !is_on_floor():
-		current_state = PlayerState.FALL
+		
+	if Input.is_action_just_pressed("Attack") && is_on_floor():
+		current_state = PlayerState.ATTACK
+		
+	if Input.is_action_pressed("Guard") && is_on_floor():
+		current_state = PlayerState.GUARD
+		lock_player = true
+	if Input.is_action_just_released("Guard"):
+		lock_player = false
 		
 	match current_state:
 		
@@ -43,6 +60,8 @@ func _physics_process(delta):
 			_Fall(delta)
 		PlayerState.ATTACK:
 			_Attack(delta)
+		PlayerState.GUARD:
+			_Guard(delta)
 			
 	move_and_slide()
 	
@@ -54,26 +73,34 @@ func _physics_process(delta):
 
 
 func _Idle(delta):
-	$"Kaito-sheet/AnimationPlayer".play("Idle")
+	
+	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Idle")
 	velocity.x = 0
 	
 func _Run(delta):
-	$"Kaito-sheet/AnimationPlayer".play("Run")
+	
+	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Run")
 	velocity.x = direction * speed
+	
 
 	
 func _Jump(delta):
-	$"Kaito-sheet/AnimationPlayer".play("Jump")
 	velocity.x = direction * speed
 	velocity.y -= jump_force
-
+	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Jump")
 	
 func _Fall(delta):
-	
+
 	velocity.x = direction * speed
 	velocity.y += gravity * delta
-
-
 	
+	if velocity.y >= 0:
+		$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Fall")
+	
+
 func _Attack(delta):
-	pass
+	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Attack")
+	
+
+func _Guard(delta):
+	$"Kaito-sheet/AnimationTree".get("parameters/playback").travel("Guard")

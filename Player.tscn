@@ -1,6 +1,10 @@
-[gd_scene load_steps=33 format=3 uid="uid://c4te5bss7vhxn"]
+[gd_scene load_steps=15 format=3 uid="uid://c4te5bss7vhxn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_oca5q"]
+[ext_resource type="Script" path="res://StateMachine.gd" id="3_udbyn"]
+[ext_resource type="Script" path="res://PlayerIdle.gd" id="4_rq7f7"]
+[ext_resource type="Script" path="res://PlayerRun.gd" id="5_l3btr"]
+[ext_resource type="Script" path="res://PlayerJump.gd" id="6_3h7vg"]
 [ext_resource type="Texture2D" uid="uid://ud64udw31k21" path="res://Textures/Kaito/Kaito-Sheet.png" id="22_dke15"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aqyx4"]
@@ -48,6 +52,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [8]
+}
+
+[sub_resource type="Animation" id="Animation_66j8m"]
+resource_name = "Guard"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [39]
 }
 
 [sub_resource type="Animation" id="Animation_13eqr"]
@@ -99,21 +118,6 @@ tracks/0/keys = {
 "values": [13, 14, 15, 16, 17, 18]
 }
 
-[sub_resource type="Animation" id="Animation_66j8m"]
-resource_name = "Guard"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [39]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4f3q4"]
 _data = {
 "Attack": SubResource("Animation_8234f"),
@@ -124,83 +128,9 @@ _data = {
 "Run": SubResource("Animation_gip1i")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8qmdt"]
-animation = &"Attack"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qen0h"]
-animation = &"Fall"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xo7a4"]
-animation = &"Guard"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c8xri"]
-animation = &"Idle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_74aaj"]
-animation = &"Jump"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7sd0p"]
-animation = &"Run"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_epk8s"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_x8r0s"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d0uh3"]
-advance_expression = "
-"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kwf36"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dy2ux"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_egrkv"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sqejt"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xagjp"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i5dfr"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0ttye"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_maeh3"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dmnwk"]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ayfvm"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gajy4"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k33fx"]
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2dss8"]
-states/Attack/node = SubResource("AnimationNodeAnimation_8qmdt")
-states/Attack/position = Vector2(261, 30.0769)
-states/Fall/node = SubResource("AnimationNodeAnimation_qen0h")
-states/Fall/position = Vector2(427, 194.077)
-states/Guard/node = SubResource("AnimationNodeAnimation_xo7a4")
-states/Guard/position = Vector2(374, 30.0769)
-states/Idle/node = SubResource("AnimationNodeAnimation_c8xri")
-states/Idle/position = Vector2(307, 118)
-states/Jump/node = SubResource("AnimationNodeAnimation_74aaj")
-states/Jump/position = Vector2(301, 194.077)
-states/Run/node = SubResource("AnimationNodeAnimation_7sd0p")
-states/Run/position = Vector2(435, 118)
-states/Start/position = Vector2(182, 118)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_epk8s"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_x8r0s"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_d0uh3"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_kwf36"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_dy2ux"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_egrkv"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_sqejt"), "Fall", "Run", SubResource("AnimationNodeStateMachineTransition_xagjp"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_i5dfr"), "Jump", "Run", SubResource("AnimationNodeStateMachineTransition_0ttye"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_maeh3"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_dmnwk"), "Idle", "Guard", SubResource("AnimationNodeStateMachineTransition_ayfvm"), "Guard", "Idle", SubResource("AnimationNodeStateMachineTransition_gajy4"), "Guard", "Attack", SubResource("AnimationNodeStateMachineTransition_k33fx")]
-graph_offset = Vector2(-177, -9.92307)
-
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_oca5q")
-speed = 800
-jump_force = 800
-gravity = 1600
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -175)
@@ -210,20 +140,34 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(0, -85)
 shape = SubResource("CapsuleShape2D_aqyx4")
 
-[node name="Kaito-sheet" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(14, -85)
 scale = Vector2(0.428522, 0.428522)
 texture = ExtResource("22_dke15")
 hframes = 7
 vframes = 7
-frame = 25
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Kaito-sheet"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 libraries = {
 "": SubResource("AnimationLibrary_4f3q4")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="Kaito-sheet"]
-tree_root = SubResource("AnimationNodeStateMachine_2dss8")
-anim_player = NodePath("../AnimationPlayer")
-active = true
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_udbyn")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "sprite", "animationPlayer")]
+script = ExtResource("4_rq7f7")
+player = NodePath("../..")
+sprite = NodePath("../../Sprite")
+animationPlayer = NodePath("../../Sprite/AnimationPlayer")
+
+[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "sprite", "animationPlayer")]
+script = ExtResource("5_l3btr")
+runSpeed = 800
+player = NodePath("../..")
+sprite = NodePath("../../Sprite")
+animationPlayer = NodePath("../../Sprite/AnimationPlayer")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("6_3h7vg")

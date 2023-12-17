@@ -1,96 +1,69 @@
 extends CharacterBody2D
+@export var characterHorizontalMovement : CharacterHorizontalMovement 
+@export var characterGravity : CharacterGravity
+@export var characterJump : CharacterJump
+var comboCounter = 0
 
-enum PlayerState { IDLE, RUN, JUMP, FALL, ATTACK, GUARD }
-var state: PlayerState = PlayerState.IDLE
-var direction
-var speed: int = 800
-var jump_force: int = 800
-var gravity: int = 1900
-var functionLabel
+ #this method has to be here since animation events only work when calling something on a parent, it simply does not call for brothers or cousins in the hierarchy
 
-var combo_timer: float = 0.0
-var combo_sequence: int = 0
-
-func _ready():
-	functionLabel = $FunctionLabel
+func _freeze():
+	characterHorizontalMovement.frozen = true
+func _unfreeze():
+	characterHorizontalMovement.frozen = false
+	
+func _reset_combo_counter():
+	comboCounter = 0
+func _increase_combo_counter():
+	comboCounter += 1
+	$ComboTimeLimit.start()
+	
+func _on_combo_time_limit_timeout():
+	if comboCounter != 0:
+		comboCounter = 0
+		
 
 func _physics_process(delta):
-	_handle_input(delta)
-
+	
+	$FunctionLabel.text = str(comboCounter)
+	
 	if is_on_floor():
-		match state:
-			PlayerState.IDLE:
-				_Idle(delta)
-			PlayerState.RUN:
-				_Run(delta)
-			PlayerState.JUMP:
-				_Jump(delta)
-			PlayerState.FALL:
-				_Fall(delta)
-			PlayerState.ATTACK:
-				_Attack(delta)
-			PlayerState.GUARD:
-				_Guard(delta)
+		
+		if Input.is_action_pressed("Guard"):
+			characterHorizontalMovement._move(0)
+			$AnimationTree.get("parameters/playback").travel("Guard")
+			print("guard")
+		
+		elif Input.is_action_just_pressed("Attack"):
+			if comboCounter <= 0:
+				$AnimationTree.get("parameters/playback").travel("Attack1")
+			else:				
+				$AnimationTree.get("parameters/playback").travel("Attack2")
+				
+			
+		elif Input.is_action_just_pressed("Jump"):
+			characterJump._jump()
+			$AnimationTree.get("parameters/playback").travel("Jump")
+			
+		elif !is_zero_approx(Input.get_axis("Left", "Right")):
+			characterHorizontalMovement._move(Input.get_axis("Left", "Right"))
+			$AnimationTree.get("parameters/playback").travel("Run")
+			
+		elif is_zero_approx(Input.get_axis("Left", "Right")):
+			characterHorizontalMovement._move(0)
+			$AnimationTree.get("parameters/playback").travel("Idle")
 	else:
-		_Fall(delta)
+		characterGravity._apply_gravity(delta)
+		characterHorizontalMovement._move(Input.get_axis("Left", "Right"))
+		$AnimationTree.get("parameters/playback").travel("Fall")
+		
 
+	if Input.get_axis("Left", "Right") > 0 && !characterHorizontalMovement.frozen:
+		$Sprite.flip_h = false
+	elif Input.get_axis("Left", "Right") < 0 && !characterHorizontalMovement.frozen:
+		$Sprite.flip_h = true
+		
 	move_and_slide()
 
-	if direction > 0:
-		$Sprite.flip_h = false
-	elif direction < 0:
-		$Sprite.flip_h = true
-
-func _handle_input(delta):
-	direction = Input.get_axis("Left", "Right")
-
-	if is_on_floor():
-		if direction:
-			state = PlayerState.RUN
-		else:
-			state = PlayerState.IDLE
-
-		if Input.is_action_just_pressed("Jump"):
-			state = PlayerState.JUMP
-
-		if Input.is_action_just_pressed("Attack"):
-			state = PlayerState.ATTACK
-
-		if Input.is_action_pressed("Guard"):
-			state = PlayerState.GUARD
-	else:
-		state = PlayerState.FALL
 
 
-func _Idle(delta):
-	_handle_animations("Idle")
-	velocity.x = 0
 
-func _Run(delta):
-	_handle_animations("Run")
-	velocity.x = direction * speed
-
-func _Jump(delta):
-	_handle_animations("Jump")
-	velocity.x = direction * speed
-	velocity.y -= jump_force
-
-func _Fall(delta):
-	_handle_animations("Fall")
-	velocity.x = direction * speed
-	velocity.y += gravity * delta
-
-	if velocity.y >= 0:
-		_handle_animations("Fall")
-
-func _Attack(delta):
-	_handle_animations("Attack")
-	velocity.x = 0
-
-func _Guard(delta):
-	_handle_animations("Guard")
-	velocity.x = 0
-
-func _handle_animations(state: String):
-	functionLabel.text = state
-	$Sprite/AnimationTree.get("parameters/playback").travel(state)

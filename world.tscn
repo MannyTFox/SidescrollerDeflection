@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://4lp6jxk2r8sj"]
+[gd_scene load_steps=11 format=3 uid="uid://4lp6jxk2r8sj"]
 
 [ext_resource type="PackedScene" uid="uid://c4te5bss7vhxn" path="res://Player.tscn" id="1_qqxl3"]
 [ext_resource type="Texture2D" uid="uid://cu6tuh054n7sq" path="res://Textures/ground.png" id="2_c1gh0"]
 [ext_resource type="Texture2D" uid="uid://bd7wvrov4s4jc" path="res://Textures/Boss_room_concept_3_2.png" id="3_f7byf"]
 [ext_resource type="Texture2D" uid="uid://dmpf5r33tkqlv" path="res://Textures/pngegg.png" id="4_ic6in"]
+[ext_resource type="PackedScene" uid="uid://b62sejypwc5oe" path="res://Components/CharacterHorizontalMovement.tscn" id="5_w3dfw"]
+[ext_resource type="Texture2D" uid="uid://bep8ncj1wrd8k" path="res://Textures/maxresdefault.jpg" id="6_bpmya"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_v1cvs"]
 
@@ -26,19 +28,57 @@ polygon = PackedVector2Array(78, -21, 46, -102, 43, -230, 20, -273, 26, -363, 59
 
 [node name="world" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_qqxl3")]
+[node name="Player" parent="." node_paths=PackedStringArray("characterHorizontalMovement") instance=ExtResource("1_qqxl3")]
+position = Vector2(28, -406)
 motion_mode = 0
+characterHorizontalMovement = NodePath("../CharacterHorizontalMovement")
 
 [node name="Ground" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(16.5, 105)
-scale = Vector2(8.71484, 1)
+z_index = -1
+position = Vector2(1290, 105)
+scale = Vector2(18.6641, 1)
 texture = ExtResource("2_c1gh0")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Ground"]
 physics_material_override = SubResource("PhysicsMaterial_v1cvs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8tq2w")
+
+[node name="Ground2" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(2534, -148)
+scale = Vector2(2.14134, -0.794065)
+texture = ExtResource("2_c1gh0")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground2"]
+physics_material_override = SubResource("PhysicsMaterial_v1cvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground2/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8tq2w")
+
+[node name="Ground3" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(3231, -337)
+scale = Vector2(2.14134, -0.794065)
+texture = ExtResource("2_c1gh0")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground3"]
+physics_material_override = SubResource("PhysicsMaterial_v1cvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground3/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8tq2w")
+
+[node name="Ground4" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(2533, -570)
+scale = Vector2(2.14134, -0.794065)
+texture = ExtResource("2_c1gh0")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Ground4"]
+physics_material_override = SubResource("PhysicsMaterial_v1cvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground4/StaticBody2D"]
 shape = SubResource("RectangleShape2D_8tq2w")
 
 [node name="BossRoomConcept32" type="Sprite2D" parent="."]
@@ -65,3 +105,13 @@ occluder = SubResource("OccluderPolygon2D_1qvio")
 [node name="LightOccluder2D" type="LightOccluder2D" parent="LightOccluder2D"]
 position = Vector2(1642, 4)
 occluder = SubResource("OccluderPolygon2D_1qvio")
+
+[node name="CharacterHorizontalMovement" parent="." node_paths=PackedStringArray("character") instance=ExtResource("5_w3dfw")]
+character = NodePath("../Player")
+
+[node name="Maxresdefault" type="Sprite2D" parent="."]
+modulate = Color(0.4, 0.4, 0.4, 1)
+z_index = -2
+position = Vector2(2711, -392)
+scale = Vector2(1.27978, 1.27978)
+texture = ExtResource("6_bpmya")

@@ -1,10 +1,11 @@
-[gd_scene load_steps=42 format=3 uid="uid://c4te5bss7vhxn"]
+[gd_scene load_steps=43 format=3 uid="uid://bddpbygkb24mw"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_oca5q"]
-[ext_resource type="PackedScene" uid="uid://b0a2wijxm1lw4" path="res://Components/CharacterGravity.tscn" id="3_x0fm8"]
-[ext_resource type="PackedScene" uid="uid://b62sejypwc5oe" path="res://Components/CharacterHorizontalMovement.tscn" id="4_45wxw"]
-[ext_resource type="PackedScene" uid="uid://c06cfucnec08r" path="res://Components/CharacterJump.tscn" id="5_oxhef"]
-[ext_resource type="Texture2D" uid="uid://ud64udw31k21" path="res://Textures/Kaito/Kaito-Sheet.png" id="22_dke15"]
+[ext_resource type="Texture2D" uid="uid://ud64udw31k21" path="res://Textures/Kaito/Kaito-Sheet.png" id="1_611p7"]
+[ext_resource type="Script" path="res://Scenes/Characters/Enemy/Enemy.gd" id="1_d6vf8"]
+[ext_resource type="PackedScene" uid="uid://b0a2wijxm1lw4" path="res://Components/CharacterGravity.tscn" id="1_kiomp"]
+[ext_resource type="PackedScene" uid="uid://b62sejypwc5oe" path="res://Components/CharacterHorizontalMovement.tscn" id="2_dtpa0"]
+[ext_resource type="PackedScene" uid="uid://c0ihq4cs3r50v" path="res://Components/CharacterFollowTarget.tscn" id="2_mj56g"]
+[ext_resource type="PackedScene" uid="uid://c06cfucnec08r" path="res://Components/CharacterJump.tscn" id="3_6bm11"]
 
 [sub_resource type="Animation" id="Animation_8234f"]
 resource_name = "Attack1"
@@ -420,7 +421,7 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kxjn8"]
 
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2dss8"]
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_jw2ka"]
 states/Attack1/node = SubResource("AnimationNodeAnimation_4e634")
 states/Attack1/position = Vector2(208, -39.9231)
 states/Attack2/node = SubResource("AnimationNodeAnimation_3dxhd")
@@ -440,24 +441,39 @@ states/Start/position = Vector2(163, 60)
 transitions = ["Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_cjufb"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_3iyam"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_y4qua"), "Idle", "Fall", SubResource("AnimationNodeStateMachineTransition_iv7bw"), "Run", "Fall", SubResource("AnimationNodeStateMachineTransition_a2cyr"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_ovf8w"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_cy6n4"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_3snxm"), "Idle", "Attack1", SubResource("AnimationNodeStateMachineTransition_3x00t"), "Attack2", "Idle", SubResource("AnimationNodeStateMachineTransition_amopp"), "Attack1", "Idle", SubResource("AnimationNodeStateMachineTransition_2warf"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_nfh68"), "Idle", "Attack2", SubResource("AnimationNodeStateMachineTransition_du0be"), "Attack2", "Jump", SubResource("AnimationNodeStateMachineTransition_mgsq8"), "Attack1", "Jump", SubResource("AnimationNodeStateMachineTransition_ontna"), "Guard", "Idle", SubResource("AnimationNodeStateMachineTransition_csvhm"), "Idle", "Guard", SubResource("AnimationNodeStateMachineTransition_31g7u"), "Run", "Guard", SubResource("AnimationNodeStateMachineTransition_t5mr7"), "Guard", "Jump", SubResource("AnimationNodeStateMachineTransition_kxjn8")]
 graph_offset = Vector2(-109, -116.923)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aqyx4"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ynykj"]
 radius = 39.0
 height = 164.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("characterHorizontalMovement", "characterGravity", "characterJump")]
-motion_mode = 1
-script = ExtResource("1_oca5q")
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("characterHorizontalMovement", "characterGravity", "characterJump", "characterFollowTarget")]
+script = ExtResource("1_d6vf8")
 characterHorizontalMovement = NodePath("CharacterHorizontalMovement")
 characterGravity = NodePath("CharacterGravity")
 characterJump = NodePath("CharacterJump")
+characterFollowTarget = NodePath("CharacterFollowTarget")
+
+[node name="CharacterFollowTarget" parent="." node_paths=PackedStringArray("character", "characterHorizontalMovement") instance=ExtResource("2_mj56g")]
+character = NodePath("..")
+characterHorizontalMovement = NodePath("../CharacterHorizontalMovement")
+
+[node name="CharacterGravity" parent="." node_paths=PackedStringArray("character") instance=ExtResource("1_kiomp")]
+character = NodePath("..")
+
+[node name="CharacterHorizontalMovement" parent="." node_paths=PackedStringArray("character") instance=ExtResource("2_dtpa0")]
+speed = 10.0
+character = NodePath("..")
+
+[node name="CharacterJump" parent="." node_paths=PackedStringArray("characterGravity", "character") instance=ExtResource("3_6bm11")]
+characterGravity = NodePath("../CharacterGravity")
+character = NodePath("..")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
 position = Vector2(14, -85)
 scale = Vector2(0.428522, 0.428522)
-texture = ExtResource("22_dke15")
+texture = ExtResource("1_611p7")
 hframes = 7
 vframes = 7
-frame = 28
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -466,7 +482,7 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeStateMachine_2dss8")
+tree_root = SubResource("AnimationNodeStateMachine_jw2ka")
 anim_player = NodePath("../AnimationPlayer")
 active = true
 
@@ -476,7 +492,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -85)
-shape = SubResource("CapsuleShape2D_aqyx4")
+shape = SubResource("CapsuleShape2D_ynykj")
 
 [node name="AnimationLabel" type="Label" parent="."]
 offset_right = 40.0
@@ -484,7 +500,8 @@ offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-text = "ATTACK2"
+text = "IDLE
+"
 
 [node name="FunctionLabel" type="Label" parent="."]
 offset_top = 22.0
@@ -495,17 +512,4 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 text = "FUNCTION"
 
-[node name="CharacterGravity" parent="." node_paths=PackedStringArray("character") instance=ExtResource("3_x0fm8")]
-character = NodePath("..")
-
-[node name="CharacterHorizontalMovement" parent="." node_paths=PackedStringArray("character") instance=ExtResource("4_45wxw")]
-character = NodePath("..")
-
-[node name="CharacterJump" parent="." node_paths=PackedStringArray("characterGravity", "character") instance=ExtResource("5_oxhef")]
-characterGravity = NodePath("../CharacterGravity")
-character = NodePath("..")
-jumpForce = 1000.0
-
 [node name="ComboTimeLimit" type="Timer" parent="."]
-
-[connection signal="timeout" from="ComboTimeLimit" to="." method="_on_combo_time_limit_timeout"]

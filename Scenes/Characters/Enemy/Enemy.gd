@@ -10,5 +10,8 @@ func _ready():
 
 func _physics_process(delta):
 	characterGravity._apply_gravity(delta)
-	
+	if !is_zero_approx(velocity.x):
+		$AnimationTree.get("parameters/playback").travel("Run")
+	else:
+		$AnimationTree.get("parameters/playback").travel("Idle")
 	move_and_slide()

@@ -26,12 +26,12 @@ func _physics_process(delta):
 	
 	$FunctionLabel.text = str(comboCounter)
 	
+	
 	if is_on_floor():
 		
 		if Input.is_action_pressed("Guard"):
 			characterHorizontalMovement._move(0)
 			$AnimationTree.get("parameters/playback").travel("Guard")
-			print("guard")
 		
 		elif Input.is_action_just_pressed("Attack"):
 			if comboCounter <= 0:

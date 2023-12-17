@@ -460,7 +460,7 @@ characterHorizontalMovement = NodePath("../CharacterHorizontalMovement")
 character = NodePath("..")
 
 [node name="CharacterHorizontalMovement" parent="." node_paths=PackedStringArray("character") instance=ExtResource("2_dtpa0")]
-speed = 10.0
+speed = 400.0
 character = NodePath("..")
 
 [node name="CharacterJump" parent="." node_paths=PackedStringArray("characterGravity", "character") instance=ExtResource("3_6bm11")]
@@ -474,6 +474,7 @@ scale = Vector2(0.428522, 0.428522)
 texture = ExtResource("1_611p7")
 hframes = 7
 vframes = 7
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

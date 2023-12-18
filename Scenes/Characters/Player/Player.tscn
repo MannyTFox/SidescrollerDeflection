@@ -438,13 +438,14 @@ states/Run/node = SubResource("AnimationNodeAnimation_5e1dq")
 states/Run/position = Vector2(461, 118)
 states/Start/position = Vector2(163, 60)
 transitions = ["Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_cjufb"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_3iyam"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_y4qua"), "Idle", "Fall", SubResource("AnimationNodeStateMachineTransition_iv7bw"), "Run", "Fall", SubResource("AnimationNodeStateMachineTransition_a2cyr"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_ovf8w"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_cy6n4"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_3snxm"), "Idle", "Attack1", SubResource("AnimationNodeStateMachineTransition_3x00t"), "Attack2", "Idle", SubResource("AnimationNodeStateMachineTransition_amopp"), "Attack1", "Idle", SubResource("AnimationNodeStateMachineTransition_2warf"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_nfh68"), "Idle", "Attack2", SubResource("AnimationNodeStateMachineTransition_du0be"), "Attack2", "Jump", SubResource("AnimationNodeStateMachineTransition_mgsq8"), "Attack1", "Jump", SubResource("AnimationNodeStateMachineTransition_ontna"), "Guard", "Idle", SubResource("AnimationNodeStateMachineTransition_csvhm"), "Idle", "Guard", SubResource("AnimationNodeStateMachineTransition_31g7u"), "Run", "Guard", SubResource("AnimationNodeStateMachineTransition_t5mr7"), "Guard", "Jump", SubResource("AnimationNodeStateMachineTransition_kxjn8")]
-graph_offset = Vector2(-109, -116.923)
+graph_offset = Vector2(-89, -47.923)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aqyx4"]
 radius = 39.0
 height = 164.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("characterHorizontalMovement", "characterGravity", "characterJump")]
+collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_jw0yp")
 characterHorizontalMovement = NodePath("CharacterHorizontalMovement")
@@ -505,7 +506,7 @@ character = NodePath("..")
 [node name="CharacterJump" parent="." node_paths=PackedStringArray("characterGravity", "character") instance=ExtResource("5_j3moj")]
 characterGravity = NodePath("../CharacterGravity")
 character = NodePath("..")
-jumpForce = 1000.0
+jumpForce = 1100.0
 
 [node name="ComboTimeLimit" type="Timer" parent="."]
 

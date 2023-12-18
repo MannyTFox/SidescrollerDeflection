@@ -51,6 +51,12 @@ Guard={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Ground"
+2d_physics/layer_2="Characters"
+2d_physics/layer_3="Hitboxes & Hurtboxes"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.403922, 0.403922, 0.403922, 1)

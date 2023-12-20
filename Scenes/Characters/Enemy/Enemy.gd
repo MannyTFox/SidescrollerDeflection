@@ -9,7 +9,6 @@ func _ready():
 	characterFollowTarget.target = get_parent().get_node("Player")
 
 func _physics_process(delta):
-	print(velocity.x)
 	if velocity.x > 0:
 		$Sprite.flip_h = false
 	elif velocity.x < 0:

@@ -7,7 +7,6 @@ var target : CharacterBody2D
 @export var stoppingDistance : float = 90
 func _physics_process(delta):
 	
-	#print(character.position.distance_to(target.position))
 	
 	if character.position.distance_to(target.position) <= stoppingDistance:
 		_stop()

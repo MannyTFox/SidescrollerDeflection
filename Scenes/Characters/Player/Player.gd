@@ -39,7 +39,7 @@ func _physics_process(delta):
 			characterHorizontalMovement._move(0)
 			$AnimationTree.get("parameters/playback").travel("Guard")
 			
-		elif Input.is_action_just_pressed("Attack") && canAttack:
+		elif Input.is_action_just_pressed("Attack") && canAttack && !characterHorizontalMovement.frozen:
 			if comboCounter <= 0:
 				$AnimationTree.get("parameters/playback").travel("Attack1")
 			else:				
@@ -60,10 +60,11 @@ func _physics_process(delta):
 		characterGravity._apply_gravity(delta)
 		characterHorizontalMovement._move(Input.get_axis("Left", "Right"))
 		if Input.is_action_just_pressed("Attack") && canAttack:
-			if comboCounter <= 0:
-				$AnimationTree.get("parameters/playback").travel("Attack1")
-			else:				
-				$AnimationTree.get("parameters/playback").travel("Attack2")
+			
+				if Input.is_action_pressed("Down"):
+					$AnimationTree.get("parameters/playback").travel("DownAirAttack")
+				else:
+					$AnimationTree.get("parameters/playback").travel("AirAttack")
 		else:
 			$AnimationTree.get("parameters/playback").travel("Fall")
 		

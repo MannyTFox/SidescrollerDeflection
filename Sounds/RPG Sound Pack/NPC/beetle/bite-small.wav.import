@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://h2na8v5vge8f"
+path="res://.godot/imported/bite-small.wav-3a18ba61e5a791c4c608053dabd8831b.sample"
+
+[deps]
+
+source_file="res://Sounds/RPG Sound Pack/NPC/beetle/bite-small.wav"
+dest_files=["res://.godot/imported/bite-small.wav-3a18ba61e5a791c4c608053dabd8831b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

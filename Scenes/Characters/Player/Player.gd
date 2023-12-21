@@ -42,18 +42,19 @@ func _physics_process(delta):
 		elif Input.is_action_just_pressed("Attack") && canAttack && !characterHorizontalMovement.frozen:
 			if comboCounter <= 0:
 				$AnimationTree.get("parameters/playback").travel("Attack1")
-			else:				
+			elif comboCounter == 1:				
 				$AnimationTree.get("parameters/playback").travel("Attack2")		
-			
+			elif comboCounter == 2:
+				$AnimationTree.get("parameters/playback").travel("Attack3")		
 		elif Input.is_action_just_pressed("Jump"):
 			characterJump._jump()
 			$AnimationTree.get("parameters/playback").travel("Jump")
 			
-		elif !is_zero_approx(Input.get_axis("Left", "Right")):
+		elif (Input.get_axis("Left", "Right")):
 			characterHorizontalMovement._move(Input.get_axis("Left", "Right"))
 			$AnimationTree.get("parameters/playback").travel("Run")
 			
-		elif is_zero_approx(Input.get_axis("Left", "Right")):
+		elif !(Input.get_axis("Left", "Right")):
 			characterHorizontalMovement._move(0)
 			$AnimationTree.get("parameters/playback").travel("Idle")
 	else:		

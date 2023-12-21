@@ -6,3 +6,7 @@ class_name CharacterJump
 
 func _jump():
 	character.velocity.y -= jumpForce
+	
+func _stopJump():
+	if character.velocity.y < 0:
+		character.velocity.y += jumpForce/2

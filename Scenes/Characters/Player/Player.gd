@@ -66,6 +66,8 @@ func _physics_process(delta):
 					$AnimationTree.get("parameters/playback").travel("DownAirAttack")
 				else:
 					$AnimationTree.get("parameters/playback").travel("AirAttack")
+		elif Input.is_action_just_released("Jump"):
+				characterJump._stopJump()
 		else:
 			$AnimationTree.get("parameters/playback").travel("Fall")
 		

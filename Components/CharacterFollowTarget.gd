@@ -7,12 +7,15 @@ var target : CharacterBody2D
 @export var stoppingDistance : float = 90
 func _physics_process(delta):
 	
-	
-	if character.position.distance_to(target.position) <= stoppingDistance:
-		_stop()
-	elif character.position.distance_to(target.position) <= minDistance:
-		_chase()
+	if target:
+		if character.position.distance_to(target.position) <= stoppingDistance:
+			_stop()
+		elif character.position.distance_to(target.position) <= minDistance:
+			_chase()
+		elif character.position.distance_to(target.position) > minDistance:
+			_stop()
 		
+			
 func _chase():
 	var direction = (target.position - character.position).normalized()
 	

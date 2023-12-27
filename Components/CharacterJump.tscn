@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c06cfucnec08r"]
-
-[ext_resource type="Script" path="res://Components/CharacterJump.gd" id="1_vsi2a"]
-
-[node name="CharacterJump" type="Node"]
-script = ExtResource("1_vsi2a")

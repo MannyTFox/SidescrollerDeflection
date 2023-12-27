@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b62sejypwc5oe"]
-
-[ext_resource type="Script" path="res://Components/CharacterHorizontalMovement.gd" id="1_6wh1h"]
-
-[node name="CharacterHorizontalMovement" type="Node"]
-script = ExtResource("1_6wh1h")

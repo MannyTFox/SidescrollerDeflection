@@ -1,5 +1,5 @@
-extends Node
 class_name CharacterJump
+extends Node
 @export var characterGravity : CharacterGravity
 @export var character : CharacterBody2D
 @export var jumpForce : float = 800

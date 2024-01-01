@@ -14,7 +14,7 @@ func _take_damage(damage):
 	currentPosture = currentPosture + damage
 	postureTimer.start()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	$"../PostureLabel".text = str(currentPosture)
 
 	

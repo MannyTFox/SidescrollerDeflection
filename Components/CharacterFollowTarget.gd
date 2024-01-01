@@ -5,14 +5,18 @@ var target : CharacterBody2D
 @export var characterHorizontalMovement : CharacterHorizontalMovement
 @export var minDistance : float = 400
 @export var stoppingDistance : float = 90
-func _physics_process(delta):
+@export var distance : float = 0
+
+func _physics_process(_delta):
+	
+	distance = character.position.distance_to(target.position)
 	
 	if target:
-		if character.position.distance_to(target.position) <= stoppingDistance:
+		if distance <= stoppingDistance:
 			_stop()
-		elif character.position.distance_to(target.position) <= minDistance:
+		elif distance <= minDistance:
 			_chase()
-		elif character.position.distance_to(target.position) > minDistance:
+		elif distance > minDistance:
 			_stop()
 		
 			

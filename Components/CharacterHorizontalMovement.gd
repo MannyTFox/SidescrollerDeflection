@@ -13,6 +13,9 @@ func _move(direction):
 	else:
 		character.velocity.x = 0
 
+func _bump(direction, bumpSpeed):
+	character.velocity.x += direction * bumpSpeed
+
 func _toggle():
 	frozen = !frozen
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://ceovdynp3veaa"]
+[gd_scene load_steps=76 format=3 uid="uid://ceovdynp3veaa"]
 
 [ext_resource type="Script" path="res://Scenes/Characters/Enemy/Enemy.gd" id="1_d6vf8"]
 [ext_resource type="Texture2D" uid="uid://dwwam1o8xh7ge" path="res://Textures/Kaito/Kaito-Sheet2.png" id="2_grbj1"]
@@ -1057,6 +1057,35 @@ tracks/6/keys = {
 "values": []
 }
 
+[sub_resource type="Animation" id="Animation_86yu2"]
+resource_name = "Stagger"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [29]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../AnimationLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["STAGGERED
+"]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4f3q4"]
 _data = {
 "AirAttack": SubResource("Animation_k8gho"),
@@ -1068,7 +1097,8 @@ _data = {
 "Guard": SubResource("Animation_66j8m"),
 "Idle": SubResource("Animation_13eqr"),
 "Jump": SubResource("Animation_52tt7"),
-"Run": SubResource("Animation_gip1i")
+"Run": SubResource("Animation_gip1i"),
+"Stagger": SubResource("Animation_86yu2")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eghde"]
@@ -1100,6 +1130,9 @@ animation = &"Jump"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5e1dq"]
 animation = &"Run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a4ilq"]
+animation = &"Stagger"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iv7bw"]
 
@@ -1160,31 +1193,43 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3ymcd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wwlke"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ppvmi"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pxnwv"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e8fwd"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_2dss8"]
 states/AirAttack/node = SubResource("AnimationNodeAnimation_eghde")
 states/AirAttack/position = Vector2(643, -74.923)
 states/Attack1/node = SubResource("AnimationNodeAnimation_4e634")
-states/Attack1/position = Vector2(102, -30.5898)
+states/Attack1/position = Vector2(36.6667, -94.1666)
 states/Attack2/node = SubResource("AnimationNodeAnimation_xa037")
 states/Attack2/position = Vector2(148, -96.4867)
 states/Attack3/node = SubResource("AnimationNodeAnimation_afemy")
-states/Attack3/position = Vector2(252, -112.487)
+states/Attack3/position = Vector2(265.333, -97.3755)
 states/DownAirAttack/node = SubResource("AnimationNodeAnimation_x61sl")
 states/DownAirAttack/position = Vector2(802, -74.923)
 states/End/position = Vector2(886, 118)
 states/Fall/node = SubResource("AnimationNodeAnimation_wo68v")
 states/Fall/position = Vector2(461, 245.077)
 states/Guard/node = SubResource("AnimationNodeAnimation_f2v85")
-states/Guard/position = Vector2(416.444, -96.8119)
+states/Guard/position = Vector2(345.777, -46.1452)
 states/Idle/node = SubResource("AnimationNodeAnimation_nm8kb")
 states/Idle/position = Vector2(319, 60)
 states/Jump/node = SubResource("AnimationNodeAnimation_wx4wb")
 states/Jump/position = Vector2(615, 60)
 states/Run/node = SubResource("AnimationNodeAnimation_5e1dq")
 states/Run/position = Vector2(460.556, 117.556)
+states/Stagger/node = SubResource("AnimationNodeAnimation_a4ilq")
+states/Stagger/position = Vector2(167.333, -214.153)
 states/Start/position = Vector2(163, 60)
-transitions = ["Idle", "Fall", SubResource("AnimationNodeStateMachineTransition_iv7bw"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_cy6n4"), "Guard", "Idle", SubResource("AnimationNodeStateMachineTransition_csvhm"), "Idle", "Guard", SubResource("AnimationNodeStateMachineTransition_31g7u"), "Idle", "Attack1", SubResource("AnimationNodeStateMachineTransition_3x00t"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_nfh68"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_y4qua"), "Run", "Fall", SubResource("AnimationNodeStateMachineTransition_a2cyr"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_3snxm"), "AirAttack", "Fall", SubResource("AnimationNodeStateMachineTransition_ealmp"), "Fall", "AirAttack", SubResource("AnimationNodeStateMachineTransition_l44ah"), "AirAttack", "Idle", SubResource("AnimationNodeStateMachineTransition_ad0m1"), "AirAttack", "Run", SubResource("AnimationNodeStateMachineTransition_ae8ee"), "Fall", "DownAirAttack", SubResource("AnimationNodeStateMachineTransition_ahix0"), "DownAirAttack", "Fall", SubResource("AnimationNodeStateMachineTransition_y4nhd"), "DownAirAttack", "Idle", SubResource("AnimationNodeStateMachineTransition_umb24"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_cjufb"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_3iyam"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_ovf8w"), "Jump", "AirAttack", SubResource("AnimationNodeStateMachineTransition_feycw"), "Jump", "DownAirAttack", SubResource("AnimationNodeStateMachineTransition_wddp2"), "Attack1", "Attack2", SubResource("AnimationNodeStateMachineTransition_pcvx7"), "Attack2", "Attack3", SubResource("AnimationNodeStateMachineTransition_b6cjs"), "Attack3", "Idle", SubResource("AnimationNodeStateMachineTransition_t0sqh")]
-graph_offset = Vector2(-12, -131.82)
+transitions = ["Idle", "Fall", SubResource("AnimationNodeStateMachineTransition_iv7bw"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_cy6n4"), "Guard", "Idle", SubResource("AnimationNodeStateMachineTransition_csvhm"), "Idle", "Guard", SubResource("AnimationNodeStateMachineTransition_31g7u"), "Idle", "Attack1", SubResource("AnimationNodeStateMachineTransition_3x00t"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_nfh68"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_y4qua"), "Run", "Fall", SubResource("AnimationNodeStateMachineTransition_a2cyr"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_3snxm"), "AirAttack", "Fall", SubResource("AnimationNodeStateMachineTransition_ealmp"), "Fall", "AirAttack", SubResource("AnimationNodeStateMachineTransition_l44ah"), "AirAttack", "Idle", SubResource("AnimationNodeStateMachineTransition_ad0m1"), "AirAttack", "Run", SubResource("AnimationNodeStateMachineTransition_ae8ee"), "Fall", "DownAirAttack", SubResource("AnimationNodeStateMachineTransition_ahix0"), "DownAirAttack", "Fall", SubResource("AnimationNodeStateMachineTransition_y4nhd"), "DownAirAttack", "Idle", SubResource("AnimationNodeStateMachineTransition_umb24"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_cjufb"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_3iyam"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_ovf8w"), "Jump", "AirAttack", SubResource("AnimationNodeStateMachineTransition_feycw"), "Jump", "DownAirAttack", SubResource("AnimationNodeStateMachineTransition_wddp2"), "Attack1", "Attack2", SubResource("AnimationNodeStateMachineTransition_pcvx7"), "Attack2", "Attack3", SubResource("AnimationNodeStateMachineTransition_b6cjs"), "Attack3", "Idle", SubResource("AnimationNodeStateMachineTransition_t0sqh"), "Attack1", "Stagger", SubResource("AnimationNodeStateMachineTransition_3ymcd"), "Attack2", "Stagger", SubResource("AnimationNodeStateMachineTransition_wwlke"), "Attack3", "Stagger", SubResource("AnimationNodeStateMachineTransition_ppvmi"), "Idle", "Stagger", SubResource("AnimationNodeStateMachineTransition_pxnwv"), "Stagger", "Idle", SubResource("AnimationNodeStateMachineTransition_e8fwd")]
+graph_offset = Vector2(-187, -245.82)
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("characterHorizontalMovement", "characterGravity", "characterJump", "characterFollowTarget", "health")]
 collision_layer = 2
@@ -1207,7 +1252,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_grbj1")
 hframes = 8
 vframes = 8
-frame = 53
+frame = 21
 
 [node name="Hurtbox" type="Area2D" parent="Sprite"]
 position = Vector2(-6, 94)
@@ -1224,7 +1269,6 @@ scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 8
 script = ExtResource("3_sl5im")
-damage = 1.0
 
 [node name="NormalAttack" type="CollisionShape2D" parent="Sprite/Hitbox"]
 visible = false
@@ -1264,7 +1308,7 @@ offset_bottom = 23.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-text = "ATTACK1"
+text = "AIR_ATTACK"
 
 [node name="HPLabel" type="Label" parent="."]
 offset_top = 22.0
@@ -1285,18 +1329,20 @@ theme_override_constants/outline_size = 5
 text = "0"
 
 [node name="ComboCooldown" type="Timer" parent="."]
-wait_time = 0.15
+wait_time = 1.5
 
 [node name="ComboTimeLimit" type="Timer" parent="."]
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="StaggerRecover" type="Timer" parent="."]
+
 [node name="Player1" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_k07e5")
 
 [node name="Player2" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_l1bm0")
+stream = ExtResource("5_jft8p")
 autoplay = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
@@ -1321,12 +1367,10 @@ character = NodePath("..")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("15_km8im")
-initialHealth = 2.0
-maxHealth = 2.0
 
 [node name="Posture" type="Node" parent="." node_paths=PackedStringArray("postureTimer")]
 script = ExtResource("17_8vj4w")
-maxPosture = 4.0
+maxPosture = 30.0
 postureTimer = NodePath("PostureTimer")
 
 [node name="PostureTimer" type="Timer" parent="Posture"]
@@ -1335,4 +1379,5 @@ wait_time = 5.0
 [connection signal="area_entered" from="Sprite/Hitbox" to="Sprite/Hitbox" method="_on_area_entered"]
 [connection signal="timeout" from="ComboCooldown" to="." method="_on_combo_cooldown_timeout"]
 [connection signal="timeout" from="ComboTimeLimit" to="." method="_on_combo_time_limit_timeout"]
+[connection signal="timeout" from="StaggerRecover" to="." method="_on_stagger_recover_timeout"]
 [connection signal="timeout" from="Posture/PostureTimer" to="Posture" method="_on_posture_timer_timeout"]

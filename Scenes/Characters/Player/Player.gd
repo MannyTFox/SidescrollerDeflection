@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var characterGravity : CharacterGravity
 @export var characterJump : CharacterJump
 @export var health : Health
+@export var staggered = false
 var canAttack = true
 var comboCounter = 0
 
@@ -35,7 +36,7 @@ func _physics_process(delta):
 	if health.currentHealth <= 0 || Input.is_action_just_pressed("reset"):
 		get_tree().reload_current_scene()
 	
-	if is_on_floor():
+	if is_on_floor() && !staggered:
 		
 		if Input.is_action_pressed("Guard"):
 			characterHorizontalMovement._move(0)
@@ -58,7 +59,7 @@ func _physics_process(delta):
 		else:
 			characterHorizontalMovement._move(0)
 			$AnimationTree.get("parameters/playback").travel("Idle")
-	else:		
+	elif !staggered:		
 		characterGravity._apply_gravity(delta)
 		characterHorizontalMovement._move(Input.get_axis("Left", "Right"))
 		if Input.is_action_just_pressed("Attack") && canAttack:
@@ -71,7 +72,8 @@ func _physics_process(delta):
 				characterJump._stopJump()
 		else:
 			$AnimationTree.get("parameters/playback").travel("Fall")
-		
+	else:
+		$AnimationTree.get("parameters/playback").travel("Stagger")	
 
 	if Input.get_axis("Left", "Right") > 0 && !characterHorizontalMovement.frozen:
 		$Sprite.scale.x = .5
@@ -81,8 +83,16 @@ func _physics_process(delta):
 		
 	move_and_slide()
 
+func _stagger():
+	staggered = true
+	if $Sprite.scale.x == .5:
+		characterHorizontalMovement._bump(-1, 100)
+	elif $Sprite.scale.x == -.5:
+		characterHorizontalMovement._bump(1, 100)	
 
+	$StaggerRecover.start()
 
-
-
-
+func _on_stagger_recover_timeout():
+	staggered = false
+	characterHorizontalMovement._move(0)
+	$AnimationTree.get("parameters/playback").travel("Idle")
